@@ -1,0 +1,42 @@
+local Tool = Instance.new("Tool")
+Tool.RequiresHandle = false
+Tool.Name = "UndergroundDash"
+Tool.Parent = game.Players.LocalPlayer.Backpack
+
+local cooldown = false
+
+Tool.Activated:Connect(function()
+    if cooldown then
+        return
+    end
+    cooldown = true
+    
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    local rootPart = character:FindFirstChild("HumanoidRootPart")
+    
+    if humanoid and rootPart then
+        -- Save the original position and speed
+        local originalPosition = rootPart.Position
+        local originalSpeed = humanoid.WalkSpeed
+        
+        -- Move the player underground
+        rootPart.CFrame = rootPart.CFrame * CFrame.new(0, -50, 0) -- Move underground (50 studs down)
+
+        -- Set new speed
+        local newSpeed = 35
+        humanoid.WalkSpeed = newSpeed
+
+        -- Wait for 3 seconds
+        wait(3)
+
+        -- Restore the original position and speed
+        rootPart.CFrame = CFrame.new(originalPosition)
+        humanoid.WalkSpeed = originalSpeed
+    end
+    
+    -- Cooldown timer for 20 seconds
+    wait(20)
+    cooldown = false
+end)
